@@ -1,0 +1,11 @@
+backend_bucket_name = "hippocraticai-terraform-state"
+backend_bucket_location = "us-central1"
+backend_force_destroy = false
+ip_cidr_range = "10.0.0.0/24"
+billing_account_id = "013EB7-09442E-23F697"
+cluster_name = "helloworld-cluster"
+region = "us-central1"
+project_id = "hippocratic-ai-gopal"
+network_name = "hippocratic-ai-network"
+subnetwork_name = "hippocratic-ai-subnetwork"
+node_service_account_email = "terraform-sa@hippocratic-ai-gopal.iam.gserviceaccount.com"
