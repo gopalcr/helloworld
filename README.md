@@ -80,19 +80,26 @@ gcloud auth activate-service-account --key-file="$PWD/hippocratic-ai-gopal-c6f67
 NOTE: The hippocratic-ai-gopal-c6f67e771e87 key was created via console. the command above to create the key has been provided for completion.
 
 # Authorize artifact registry "helloworld-docker-repo"
+```
 gcloud auth configure-docker us-central1-docker.pkg.dev
-
+```
 
 # Docker build
-- docker build -t [REGION]-docker.pkg.dev/[PROJECT-ID]/[REPOSITORY]/[IMAGE-NAME]:[TAG] .
-- docker push [REGION]-docker.pkg.dev/[PROJECT-ID]/[REPOSITORY]/[IMAGE-NAME]:[TAG]
+```
+  docker build -t [REGION]-docker.pkg.dev/[PROJECT-ID]/[REPOSITORY]/[IMAGE-NAME]:[TAG] .
+  docker push [REGION]-docker.pkg.dev/[PROJECT-ID]/[REPOSITORY]/[IMAGE-NAME]:[TAG]
+```
 ## Example:
-- docker build -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest .
-- docker push us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest
+```
+  docker build -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest .
+  docker push us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest
+```
 
 # To pull image
-- gcloud auth configure-docker us-central1-docker.pkg.dev
-- docker pull us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest
+```
+ gcloud auth configure-docker us-central1-docker.pkg.dev
+ docker pull us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest
+```
 
 # Improvements
 - Use production grade nodes in node pool
