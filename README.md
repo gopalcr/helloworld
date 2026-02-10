@@ -34,11 +34,11 @@ gcloud container clusters get-credentials helloworld-cluster --region us-central
 
 # Create service account and grant permissions to avoid using a user with full admin access to be used in automation scripts.
 Create Service account (Terraform) with required (admin) permissions. See serviceaccount module for details. Then:
-    SA_EMAIL=$(terraform output -raw module.service_account.sa_email)
-    PROJECT_ID=$(terraform output -raw module.project.project_id)   # or use your project id
+    - Set SA_EMAIL=$(terraform output -raw module.service_account.sa_email)
+    - Set PROJECT_ID=$(terraform output -raw module.project.project_id)   # or use your project id
     # Create json key file for the service account
-    gcloud iam service-accounts keys create ./hippocratic-ai-gopal-c6f67e771e87.json \
-    --iam-account="${SA_EMAIL}" --project="${PROJECT_ID}"
+    ```gcloud iam service-accounts keys create ./hippocratic-ai-gopal-c6f67e771e87.json \
+    --iam-account="${SA_EMAIL}" --project="${PROJECT_ID}"```
 
  # Temporary for this shell session
 export GOOGLE_APPLICATION_CREDENTIALS="$PWD/hippocratic-ai-gopal-c6f67e771e87.json"
