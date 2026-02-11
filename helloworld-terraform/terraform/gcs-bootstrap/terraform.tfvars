@@ -17,6 +17,6 @@ roles = [
   "roles/compute.admin",
   "roles/compute.networkAdmin",
 ]
-repository_id = "hippocraticai-terraform-repo"
+repository_id = "helloworld-docker-repo"
 
 

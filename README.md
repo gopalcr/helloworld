@@ -89,6 +89,13 @@ gcloud auth configure-docker us-central1-docker.pkg.dev
   docker build -t [REGION]-docker.pkg.dev/[PROJECT-ID]/[REPOSITORY]/[IMAGE-NAME]:[TAG] .
   docker push [REGION]-docker.pkg.dev/[PROJECT-ID]/[REPOSITORY]/[IMAGE-NAME]:[TAG]
 ```
+### Since I built on Mac, I need to do the following to make the image run on Linux:
+```
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-repo/helloworld:latest \
+  --push .
+```
 ## Example:
 ```
   docker build -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest .
@@ -99,6 +106,37 @@ gcloud auth configure-docker us-central1-docker.pkg.dev
 ```
  gcloud auth configure-docker us-central1-docker.pkg.dev
  docker pull us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest
+```
+
+# Setup kubectl
+```
+gcloud components install kubectl
+export PATH=/Users/gopalramalingam/Downloads/HippocraticAI/Assignment/google-cloud-sdk/bin:$PATH
+```
+
+# Connect to GKE cluster
+```
+gcloud container clusters get-credentials helloworld-cluster --region us-central1
+gcloud config list
+# To get Cluster's IP Address
+kubectl config view --minify | egrep 'server:|name:'
+```
+
+# Authenticate Helm to use artifact registry repo
+
+```
+base64 FILE-NAME > NEW-FILE-NAME
+cat KEY-FILE | helm registry login -u KEY-TYPE --password-stdin \
+https://LOCATION-docker.pkg.dev
+```
+
+# Deploy the newly uploaded image
+```
+helm upgrade --install helloworld ./helloworld \      
+  --namespace helloworld \
+  --create-namespace
+
+kubectl rollout restart deployment/helloworld -n helloworld
 ```
 
 # Improvements
