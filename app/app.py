@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
+from datetime import datetime
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def hello():
-    return "<h1>Hello, World!</h1>", 200
+    dt=datetime.now()
+    dt_str = dt.strftime("%Y-%m-%d %H:%M:%S")
+    return f"<h1>Hello, World! The current time is {dt_str} </h1>", 200
     #return jsonify({"message": "Hello, World!"}), 200
 
 @app.route('/api/data', methods=['POST'])

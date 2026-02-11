@@ -16,6 +16,8 @@ roles = [
   "roles/serviceusage.serviceUsageAdmin",
   "roles/compute.admin",
   "roles/compute.networkAdmin",
+  "roles/viewer",
+  "roles/container.defaultNodeServiceAccount",
 ]
 repository_id = "helloworld-docker-repo"
 

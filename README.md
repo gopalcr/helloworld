@@ -93,7 +93,7 @@ gcloud auth configure-docker us-central1-docker.pkg.dev
 ```
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-repo/helloworld:latest \
+  -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/helloworld:latest \
   --push .
 ```
 ## Example:
@@ -138,7 +138,13 @@ helm upgrade --install helloworld ./helloworld \
 
 kubectl rollout restart deployment/helloworld -n helloworld
 ```
-
+# Features
+- Bootstrap Terraform to deploy terraform backend GCS bucket, service account, project,  enable apis and artifact registry
+- Terraform to deploy VPC, network, subnet, GKE cluster and public IP
+- use the GCS bucket provisioned above.
+- Helm chart to deploy helloworld with static IP provisioned above. Use an already provisioned public IP via terraform and not use service type LoadBalancer which will create different public IPs every time the helloworld chart is deleted and redeployed messing up DNS creation and SSL setup.
+- 
+- 
 # Improvements
 - Use production grade nodes in node pool
 - Add SSO (SAML) authentication to the app
@@ -150,4 +156,43 @@ kubectl rollout restart deployment/helloworld -n helloworld
 - Add DNS
 - Add Https with managed SSL certificate
 - Store terraform plan output and use in terraform apply command
+- 
+
+# Command reference
+## Setup
+- gcloud auth activate-service-account --key-file="$PWD/hippocratic-ai-gopal-c6f67e771e87.json"
+- gcloud compute addresses list --regions=us-central1 | grep helloworld-static-external-ip
+
+## Build
+- docker buildx build \                                      
+  --platform linux/amd64,linux/arm64 \
+  -t us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/helloworld:latest \
+  --push .
+## Deploy
+-  helm --debug upgrade --install helloworld ./helloworld \   
+  --namespace helloworld \
+  --create-namespace -f values.yaml
+-  kubectl rollout restart deployment/helloworld -n helloworld
+
+## Status check
+- kubectl get endpoints -n helloworld helloworld -o wide    
+- kubectl get svc -n helloworld -o yaml
+- helm template helloworld helloworld -f values.yaml 
+- gcloud compute addresses describe helloworld-static-external-ip \
+  --region=us-central1 \
+  --format="get(address)"
+- 
+
+# Local testing
+- docker pull us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest 
+- docker run -p 8000:8000 us-central1-docker.pkg.dev/hippocratic-ai-gopal/helloworld-docker-repo/demoapp:latest
+
+# Perf testing
+- k6 run -e BASE_URL="http://34.133.137.182/" -e PATH="/" ./helloworld_perf.js
+
+# Notes on scale out and scale in requirement
+- Scale out at 80% can be done with HPA (to 5 replicas). It has already been implemented and tested (with 50% CPU threshold instead of 80%).
+- But Scale in at 20% (while Scale out is 50%) is not possible with HPA as it works with a single threshold
+- As an alternative to scaling down at 20%, I've setup slow scale down towards min replicas (2 replicas) over a 5 min period
+- If exact behavior is needed, we need KEDA to be setup with custom prometheus queries that report when "real" cpu hits 50% and 20% and orchestrate the scaling. This needs a prometheus instance reachable within the cluster. But since I use GCloud monitoring for Observability, setting up a prometheus stack is a redundant infrastructure that needs to be setup. This requirement needs to be re-evaluated before implementing this.
 - 

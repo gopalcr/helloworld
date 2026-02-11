@@ -27,3 +27,8 @@ module "gke" {
   project_id         = var.project_id
   node_service_account_email = data.google_service_account.node_sa.email
 }
+
+module "public_ip" {
+  source              = "../modules/public-ip"
+  project_id         = var.project_id
+}
