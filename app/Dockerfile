@@ -13,7 +13,10 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
-COPY . .
+COPY app.py .
+COPY requirements.txt .
+
+RUN apt update && apt install curl wget -y
 
 # Expose the port Gunicorn will run on
 EXPOSE 8000
