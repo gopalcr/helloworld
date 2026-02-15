@@ -54,3 +54,11 @@ variable node_service_account_email {
   description = "The email of the service account to be used for GKE nodes."
   type        = string
 }
+
+variable "admin_cidrs" {
+  description = "List of CIDR blocks for master authorized networks."
+  type        = list(string)
+  default     = [
+    "107.208.13.122/32"  # office network
+  ]
+}   

@@ -72,7 +72,13 @@ gcloud container clusters get-credentials helloworld-cluster --region us-central
 export GOOGLE_APPLICATION_CREDENTIALS="$PWD/hippocratic-ai-gopal-c6f67e771e87.json"
 ```
 
-# To run gcloud commands:
+# To run gcloud commands via owner account (gopalcr@gmail.com):
+```
+gcloud auth login
+gcloud config set account gopalcr@gmail.com
+```
+
+# To run gcloud commands via service account:
 ```
 gcloud auth activate-service-account --key-file="$PWD/hippocratic-ai-gopal-c6f67e771e87.json"
 ```
@@ -143,7 +149,7 @@ kubectl rollout restart deployment/helloworld -n helloworld
 - Terraform to deploy VPC, network, subnet, GKE cluster and public IP
 - use the GCS bucket provisioned above.
 - Helm chart to deploy helloworld with static IP provisioned above. Use an already provisioned public IP via terraform and not use service type LoadBalancer which will create different public IPs every time the helloworld chart is deleted and redeployed messing up DNS creation and SSL setup.
-- 
+- Only specific CIDRs can connect to the API endpoint of the cluster.
 - 
 # Improvements
 - Use production grade nodes in node pool
@@ -156,7 +162,11 @@ kubectl rollout restart deployment/helloworld -n helloworld
 - Add DNS
 - Add Https with managed SSL certificate
 - Store terraform plan output and use in terraform apply command
+- Enable privte settings for cluster so the API endpoint is accessible only from within the VPC or via VPN.
+- Enable Container Security API for Security insights into Google Kubernetes Engine clusters.
 - 
+
+
 
 # Command reference
 ## Setup

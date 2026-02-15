@@ -26,6 +26,7 @@ module "gke" {
   subnetwork_id      = module.subnetwork.subnetwork_id
   project_id         = var.project_id
   node_service_account_email = data.google_service_account.node_sa.email
+  admin_cidrs = var.admin_cidrs
 }
 
 module "public_ip" {

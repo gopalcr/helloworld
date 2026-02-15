@@ -9,3 +9,8 @@ project_id = "hippocratic-ai-gopal"
 network_name = "hippocratic-ai-network"
 subnetwork_name = "hippocratic-ai-subnetwork"
 node_service_account_email = "terraform-sa@hippocratic-ai-gopal.iam.gserviceaccount.com"
+admin_cidrs = [
+   # "203.0.113.0/24",  # office network
+    "107.208.13.122/32"  # office network"
+  ]
+
